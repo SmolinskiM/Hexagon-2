@@ -1,0 +1,3 @@
+color change do hex spawn
+funck spawn wywołuje event on spawn
+side podpinać w inspektorze
