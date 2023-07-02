@@ -1,1 +1,0 @@
-Czasami kolor backgroundu nie pasuje do triggera hexu

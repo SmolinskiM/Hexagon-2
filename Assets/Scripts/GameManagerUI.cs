@@ -10,8 +10,11 @@ public class GameManagerUI : MonoBehaviour
     [SerializeField] private Button homeButton;
     [SerializeField] private Button restartButton;
 
+    [SerializeField] private Player player;
+
     private void Awake()
     {
+        player.onHexExit += UpdateScore;
         restartButton.onClick.AddListener(Restart);
         homeButton.onClick.AddListener(BackToHome);
     }

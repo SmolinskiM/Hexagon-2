@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameManager : SingletoneMonobehaviour<GameManager>
 {
-    [SerializeField] GameObject endGameScreen;
+    [SerializeField] private GameObject endGameScreen;
 
     public int Score { get; set; }
 

@@ -1,18 +1,20 @@
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class HexSpawner : MonoBehaviour
 {
+    public Action<SideColor> OnColorChange;
+
     [SerializeField] private Hexagon hexagonPref;
 
-    [SerializeField] private ColorChanger colorChanger;
-
-    [SerializeField] private ColorChangerBackground colorChangerBackground;
+    [SerializeField] private SideColor[] sideColors;
 
     private float timeToSpawnLeft;
 
     private IObjectPool<Hexagon> pool;
 
+    private readonly int COLOR_COUNT = 6;
     private readonly float TIME_TO_SPAWN = 2.5f;
 
     public IObjectPool<Hexagon> Pool { get { return pool; } }
@@ -20,7 +22,6 @@ public class HexSpawner : MonoBehaviour
     private void Awake()
     {
         pool = new ObjectPool<Hexagon>(CreatePooledItem, ActionOnGet, ActionOnRelease);
-        SpawnHex();
     }
 
     private void Update()
@@ -38,11 +39,11 @@ public class HexSpawner : MonoBehaviour
     private void SpawnHex()
     {
         Hexagon hexagon = pool.Get();
-        hexagon.ChangeTriggerSide(colorChanger.RandomingColor());
+        hexagon.ChangeTriggerSide(RandomingColor());
 
         if (GameManager.Instance.Score >= 10)
         {
-            hexagon.RotationSpeed = Random.Range(-2, 3);
+            hexagon.RotationSpeed = UnityEngine.Random.Range(-2, 3);
         }
 
         timeToSpawnLeft = TIME_TO_SPAWN;
@@ -52,7 +53,6 @@ public class HexSpawner : MonoBehaviour
     {
         Hexagon hexagon = Instantiate(hexagonPref, Vector3.zero, Quaternion.identity);
         hexagon.HexSpawner = this;
-        hexagon.ColorChangerBackground = colorChangerBackground;
         return hexagon;
     }
 
@@ -65,5 +65,13 @@ public class HexSpawner : MonoBehaviour
     {
         hexagon.gameObject.SetActive(false);
         hexagon.transform.localScale = new Vector3(15, 15, 1);
+    }
+
+    private SideColor RandomingColor()
+    {
+        int randomColor = UnityEngine.Random.Range(0, COLOR_COUNT);
+        SideColor sideColor = sideColors[randomColor];
+        OnColorChange?.Invoke(sideColor);
+        return sideColor;
     }
 }

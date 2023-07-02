@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class ColorChangerBackground : MonoBehaviour
 {
+    [SerializeField] private Player player;
+    [SerializeField] private HexSpawner hexSpawner;
+
     private float firstTimeCooldown = 4;
 
     private List<SideColor> colors = new List<SideColor>();
@@ -13,6 +16,8 @@ public class ColorChangerBackground : MonoBehaviour
 
     private void Awake()
     {
+        player.onHexExit += RemoveFirstColor;
+        hexSpawner.OnColorChange += AddNextColor;
         backgroundSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -23,9 +28,7 @@ public class ColorChangerBackground : MonoBehaviour
         colorBySideColor.Add(SideColor.Green, Color.green);
         colorBySideColor.Add(SideColor.Magenta, Color.magenta);
         colorBySideColor.Add(SideColor.Red, Color.red);
-        colorBySideColor.Add(SideColor.Yellow, Color.yellow);
-
-        ChangeColorBackground();
+        colorBySideColor.Add(SideColor.Yellow, new Color(1, 1, 0));
     }
 
     private void Update()

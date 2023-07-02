@@ -1,11 +1,14 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Hexagon : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    public Action onTriggerExit;
 
-    private Side[] sides;
+    [SerializeField] private Side[] sides;
+
+    private Rigidbody2D rb;
 
     private readonly float shrinkSpeed = 2f;
 
@@ -16,7 +19,6 @@ public class Hexagon : MonoBehaviour
 
     private void Awake()
     {
-        sides = GetComponentsInChildren<Side>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -33,7 +35,7 @@ public class Hexagon : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        ColorChangerBackground.RemoveFirstColor();
+        onTriggerExit?.Invoke();
     }
 
     public void ChangeTriggerSide(SideColor sideColor)

@@ -1,18 +1,12 @@
+using System;
 using UnityEngine;
-
 public class Player : MonoBehaviour
 {
+    public Action onHexExit;
 
     private float movement;
 
     private readonly float MOVE_SPEED = 300;
-
-    private GameManagerUI gameManagerUI;
-
-    private void Awake()
-    {
-        gameManagerUI = GameManager.Instance.GetComponent<GameManagerUI>();
-    }
 
     void Update()
     {
@@ -32,7 +26,7 @@ public class Player : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         GameManager.Instance.Score++;
-        gameManagerUI.UpdateScore();
+        onHexExit?.Invoke();
     }
 }
 
